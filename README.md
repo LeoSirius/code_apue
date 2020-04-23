@@ -13,7 +13,7 @@ apue的库下载好后
 ### 安装
 
 ```bash
-sudo apt-get install libbsd-dev
+sudo apt install libbsd-dev
 cd apue.3e
 make
 ......
