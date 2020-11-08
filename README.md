@@ -1,31 +1,6 @@
-## 文件命名规则
+# unix环境高级编程（学习笔记）
 
-按照`章节号_内容.c`的形式命名
+> 纯代码在docs目录下
 
-## 注释与学习笔记
+## Table of Contentx
 
-每个文件开头包含了一段注释，方便理解
-
-## 环境搭建
-
-apue的库下载好后
-
-### 安装
-
-```bash
-sudo apt install libbsd-dev
-cd apue.3e
-make
-......
-
-sudo cp ./include/apue.h /usr/include/
-sudo cp ./lib/libapue.a /usr/local/lib/
-```
-
-注意在make前，确保systype.sh是可执行文件。
-
-### 编译
-
-```bash
-gcc filename.c -lapue
-```
