@@ -17,7 +17,7 @@ apue的库下载好后
 ```bash
 sudo apt install libbsd-dev
 cd apue.3e
-make
+# make
 ......
 
 sudo cp ./include/apue.h /usr/include/
