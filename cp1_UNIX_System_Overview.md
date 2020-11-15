@@ -112,3 +112,12 @@ main(void)
 }
 ```
 
+## 1.6 Programs and Process
+
+操作进程的三个函数：
+
+- fork
+- exec（family）
+- waitpid
+
+
