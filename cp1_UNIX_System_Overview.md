@@ -184,3 +184,8 @@ main(int argc, char *argv[])
 EACCES: Permission denied
 ./a.out: No such file or directory
 ```
+
+`<errno.h>`中的错误大致可分为两类：
+
+- fatal error，遇到后程序直接退出
+- nonfatal error，比如因资源短缺造成的，这时解决办法就是等一段时间后重试
