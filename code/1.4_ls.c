@@ -1,11 +1,13 @@
+// 1.4_ls.c
+// 用库函数实现ls命令
 #include "apue.h"
 #include <dirent.h>
 
 int
 main(int argc, char *argv[])
 {
-    DIR             *dp;
-    struct dirent   *dirp;
+    DIR             *dp;          // DIR 类似于 FILE，是指向目录的结构体
+    struct dirent   *dirp;        // 存放目下的dirent的结构体
 
     if (argc != 2)
         err_quit("usage: ls directort_name");

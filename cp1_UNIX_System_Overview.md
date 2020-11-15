@@ -21,17 +21,17 @@ leo:x:1000:1000::/home/leo:/bin/sh
 
 ## 1.4 Files and Directories
 
-
-
-```c
+```cpp
+// 1.4_ls.c
+// 用库函数实现ls命令
 #include "apue.h"
 #include <dirent.h>
 
 int
 main(int argc, char *argv[])
 {
-    DIR             *dp;
-    struct dirent   *dirp;
+    DIR             *dp;          // DIR 类似于 FILE，是指向目录的结构体
+    struct dirent   *dirp;        // 存放目下的dirent的结构体
 
     if (argc != 2)
         err_quit("usage: ls directort_name");
@@ -45,5 +45,70 @@ main(int argc, char *argv[])
 }
 ```
 
+## 1.5 Input and Output
 
+- 系统调用IO：unbuffered io，需要另外手动开辟buffer
+- 标准库IO：buffered io，无需另外手动开辟buffer
+
+首先用系统调用来实现文件拷贝
+
+```cpp
+// 1.5_copy1.c
+// 用 system call 和 对标准输入输出的重定向，实现文件拷贝
+#include "apue.h"
+
+#define BUFFSIZE 4096
+
+int
+main(void)
+{
+    int     n;
+    char    buf[BUFFSIZE];
+    while ((n = read(STDIN_FILENO, buf, BUFFSIZE)) > 0)   // 当读到EOF时，read返回0
+        if (write(STDOUT_FILENO, buf, n) != n)
+            err_sys("write error");
+    
+    if (n < 0)
+        err_sys("read error");
+    
+    exit(0);
+}
+```
+
+这个程序有两个用法。可以直接在程序运行时通过shell进行标准输出。也可以重定向标准输入。
+
+```
+$ ./a.out
+aaa EOF
+aaa   # 这是输出
+```
+
+```
+(base) root code (master) # echo hello > outfile
+(base) root code (master) # ./a.out < outfile > infile
+(base) root code (master) # cat infile 
+hello
+```
+
+用标准库来实现拷贝
+
+```cpp
+// 1.5_copy2.c
+// 用标准库拷贝文件，getc和putc一次读写一个字符。
+// 这两个函数的参数是文件流，而不是文件描述符
+#include "apue.h"
+
+int
+main(void)
+{
+    int       c;
+    while ((c = getc(stdin)) != EOF)
+        if (putc(c, stdout) == EOF)
+            err_sys("output error");
+    if (ferror(stdin))
+        err_sys("input error");
+
+    exit(0);
+}
+```
 
