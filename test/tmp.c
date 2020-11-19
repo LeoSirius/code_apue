@@ -25,7 +25,6 @@ main(void)
         off_t curroff = lseek(fd, 0, SEEK_CUR);
         // print currnet offset
         printf("in parent fd = %d, curroff = %d\n")
-        
 
     } else {
         // child

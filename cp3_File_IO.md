@@ -6,7 +6,7 @@
 
 除了进程级别的文件描述符，操作系统还维护了一个`打开文件表`。文件偏移量等是存在`打开文件表`里的。
 
-![fd](https://images-of-leosirius.oss-cn-beijing.aliyuncs.com/tuchuang-tutorials/tutorial_apue/cp3_fd.png?Expires=1605781329&OSSAccessKeyId=TMP.3Kk3gkGvFpNFkq3PsfXiHJQdXk44KiKJPsmzpQchxKXcnGLJupqgKvnnbci4HqkdSD62Qfzr1vtQsXRTAoCv3k12XoJhd7&Signature=Ci%2FKbDpN62tNAgGwpJKSq2bQFCs%3D&versionId=CAEQCxiBgMDqhp__rhciIDM0MWExZDZlZjFlMzQyNWFiMzE0MzY0NjJiNTQ2ZDhj&response-content-type=application%2Foctet-stream)
+![fd](https://images-of-leosirius.oss-cn-beijing.aliyuncs.com/tuchuang-tutorials/tutorial_apue/cp3_fd.png)
 
 - A进程的fd1和30指向了同一个文件句柄（23），这可能是调用`dup`,`fcntl`或对同一文件多次`open`造成
 - A进程和B进程各自的fd2指向同一个文件句柄（73），可能的情况是：
