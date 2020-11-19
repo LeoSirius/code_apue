@@ -1,28 +1,37 @@
 #include "apue.h"
+#include <unistd.h>
 #include <fcntl.h>
 
-char buf1[] = "abcdefghij";
-char buf2[] = "ABCDEFGHIJ";
+// fork -> open -> lseek
+// open -> fork -> lseek
+// open -> lseek -> fork
 
 int
 main(void)
 {
     int fd;
+    pid_t pid;
+    int fd;
+    off_t offset;
 
-    if ((fd = creat("file.hole", FILE_MODE)) < 0)
-        err_sys("creat error");
+    if ((pid = fork()) < 0)
+        err_sys("fork error");
+    else if (pid > 0) {
+        // parent 
+        if ((fd = open("tmp", O_CREAT, S_IRWXU) == -1))
+            err_sys("open error");
+        offset = lseek(fd, 10, SEEK_SET);   // set offset = 10 in parent
 
-    if (write(fd, buf1, 10) != 10)
-        err_sys("buf1 write error");
-    // offset now = 10
+        off_t curroff = lseek(fd, 0, SEEK_CUR);
+        // print currnet offset
+        printf("in parent fd = %d, curroff = %d\n")
+        
 
-    if (lseek(fd, 16384, SEEK_SET) == -1)
-        err_sys("lseek error");
-    // offset now = 16384
-
-    if (write(fd, buf2, 10) != 10)
-        err_sys("buf2 write error");
-    // ofset now = 16394
+    } else {
+        // child
+        if ((fd = open("tmp", O_CREAT, S_IRWXU) == -1))
+            err_sys("open error");
+    }
 
     exit(0);
 }

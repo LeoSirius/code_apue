@@ -4,7 +4,19 @@
 
 对内核来说，打开的文件都用文件描述符来表示。open和create文件的时候，内核会返回一个文件描述符给进程用。
 
-TODO: 用多线程开多个文件，验证文件描述符是不是进程内唯一递增的
+除了进程级别的文件描述符，操作系统还维护了一个`打开文件表`。文件偏移量等是存在`打开文件表`里的。
+
+![fd](https://images-of-leosirius.oss-cn-beijing.aliyuncs.com/tuchuang-tutorials/tutorial_apue/cp3_fd.png?Expires=1605781329&OSSAccessKeyId=TMP.3Kk3gkGvFpNFkq3PsfXiHJQdXk44KiKJPsmzpQchxKXcnGLJupqgKvnnbci4HqkdSD62Qfzr1vtQsXRTAoCv3k12XoJhd7&Signature=Ci%2FKbDpN62tNAgGwpJKSq2bQFCs%3D&versionId=CAEQCxiBgMDqhp__rhciIDM0MWExZDZlZjFlMzQyNWFiMzE0MzY0NjJiNTQ2ZDhj&response-content-type=application%2Foctet-stream)
+
+- A进程的fd1和30指向了同一个文件句柄（23），这可能是调用`dup`,`fcntl`或对同一文件多次`open`造成
+- A进程和B进程各自的fd2指向同一个文件句柄（73），可能的情况是：
+  - B从A中fork()而来
+  - 通过UNIX套接字把文件描述符传给另一个进程
+  - A和B`open`同一个文件，正好进程内部的fd也相同
+- A的fd0和B的fd3最后指向的文件句柄不同，但是最后的inode相同，即还是同一个文件。这时两个进程操作文件的offset是不同的。
+
+可以看到offset是系统级的。如果两个fd指向同一个文件句柄，则它们的offset是共享的。
+
 
 ## 3.3 `open` and `openat` Functions
 
@@ -29,6 +41,8 @@ open(path, O_WRONLY | O_CREAT | O_TRUNC, mode);
 在进程退出的时候，其打开的所有文件都会自动关闭。
 
 ## 3.6 `lseek` Function
+
+### `lseek`的三种情况
 
 每个打开的文件都会有一个`current file offset`，表示从文件开头到当前操作的字节的距离。
 
@@ -69,6 +83,8 @@ seek OK
 (base) root test (master) # cat < /etc/passwd | ./a.out 
 cannot seek
 ```
+
+### 带洞的文件
 
 如果把offset移到文件最大字节的后面，再写东西，则可以创建有洞的文件。
 
@@ -127,3 +143,5 @@ main(void)
  8 -rw-r--r-- 1 root root 16394 Nov 19 08:38 file.hole
 20 -rw-r--r-- 1 root root 16394 Nov 19 08:41 file.nohole
 ```
+
+### 
