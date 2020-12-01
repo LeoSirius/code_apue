@@ -18,7 +18,7 @@
 可以看到offset是系统级的。如果两个fd指向同一个文件句柄，则它们的offset是共享的。
 
 
-## 3.3 `open` and `openat` Functions
+## 3.3 open and openat Functions
 
 openat比open多个一个文件描述符参数，根据第二个路径参数，可能有三种情况
 
@@ -28,7 +28,7 @@ openat比open多个一个文件描述符参数，根据第二个路径参数，�
 
 > 统一进程下的不同线程的CWD是一样的。加入openat的一个目的是为了解决不同线程操作文件方便。
 
-## 3.4 `create` Function
+## 3.4 create Function
 
 调用create其实和下面的open是等价的
 
@@ -36,13 +36,13 @@ openat比open多个一个文件描述符参数，根据第二个路径参数，�
 open(path, O_WRONLY | O_CREAT | O_TRUNC, mode);
 ```
 
-## 3.5 `close` Function
+## 3.5 close Function
 
 在进程退出的时候，其打开的所有文件都会自动关闭。
 
-## 3.6 `lseek` Function
+## 3.6 lseek Function
 
-### `lseek`的三种情况
+### lseek的三种情况
 
 每个打开的文件都会有一个`current file offset`，表示从文件开头到当前操作的字节的距离。
 
